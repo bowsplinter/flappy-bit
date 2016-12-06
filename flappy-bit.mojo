@@ -7,8 +7,10 @@
     <src>compare8.luc</src>
     <src>register.luc</src>
     <src>boole8.luc</src>
+    <src>check.luc</src>
     <src>multi_seven_seg.luc</src>
     <src top="true">mojo_top.luc</src>
+    <src>bound_to_bird.luc</src>
     <src>boundaries.luc</src>
     <src>multiplier8.luc</src>
     <src>adder8.luc</src>

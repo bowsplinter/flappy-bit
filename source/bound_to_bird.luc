@@ -1,0 +1,19 @@
+module bound_to_bird (
+    input redlevel[3],
+    output yellowlevel[5]
+  ) {
+
+  always {
+    case (redlevel) {
+      0: yellowlevel = 00000;
+      1: yellowlevel = 00100;
+      2: yellowlevel = 01000;
+      3: yellowlevel = 01100;
+      4: yellowlevel = 10000;
+      5: yellowlevel = 10100;
+      6: yellowlevel = 11000;
+      7: yellowlevel = 11100;
+      default: yellowlevel = 0;       
+    }
+  }
+}

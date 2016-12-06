@@ -1,3 +1,4 @@
+// should make it only have max 32 numbers
 module bird_level (
     input clk,  // clock
     input rst,  // reset

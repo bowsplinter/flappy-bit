@@ -1,0 +1,59 @@
+// make sure bird_level is above bottom boundary and below top boundary
+// 32 to 8 
+module check (
+    input clk,  // clock
+    input io_button[5],
+    output debug1[8],
+    output debug2[8],
+    output debug3[8],
+    output debug4[8]
+  ) {
+  .clk(clk) {
+  bird_level bird_level;
+  boundaries boundaries;
+  dff counter[25];
+  }
+  bound_to_bird converttop;
+  bound_to_bird convertbot;
+  alu8 alu;
+  var reset;
+  always {
+    counter.d = counter.q + 1;  
+    
+    reset = 0;
+    
+    bird_level.on_plus = io_button[0];
+    bird_level.rst = reset;
+    boundaries.rst = reset;
+    alu.a = 0;
+    alu.b = 0;
+    alu.alufn = 0;
+    
+    converttop.redlevel = boundaries.top;
+    convertbot.redlevel = boundaries.bot;
+    
+    debug1 = bird_level.level;
+    debug2 = converttop.yellowlevel;
+    debug3 = convertbot.yellowlevel;
+    debug4 = counter.q[24];
+    
+    // game ends when level is less than top or more than bot
+     if (counter.q[24] == 0) {
+      alu.a = bird_level.level;
+      alu.b = converttop.yellowlevel;
+      alu.alufn = 6b110101;
+      if (alu.out == 8b1) { // level is less than top 
+        bird_level.rst = 1;
+        boundaries.rst = 1;
+      }
+    } else {
+      alu.b = bird_level.level;
+      alu.a = convertbot.yellowlevel;
+      alu.alufn = 6b110101;
+      if (alu.out == 8b1) { // level is more than bot
+        bird_level.rst = 1;
+        boundaries.rst = 1;
+      }
+    }
+  }
+}
