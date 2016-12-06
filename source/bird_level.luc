@@ -1,0 +1,29 @@
+module bird_level (
+    input clk,  // clock
+    input rst,  // reset
+    input on_plus,
+    output level[8]
+  ) {
+  .clk(clk) {
+    .rst(rst) {
+    dff counter[30];
+    dff birdreg[32](#INIT(00010000<<24));
+    dff start[1];
+    }
+  }
+
+  always {
+    // higher range - bird moves up slower
+    // lower range - bird moves up faster
+    // must change register values and shift left for init value also
+    level = birdreg.q[31:24];
+    
+    counter.d = counter.q + 1;
+    if (on_plus == 1) {
+        start.d = 1;
+        birdreg.d = birdreg.q + 1;
+    } else if (start.q == 1){  // bird only falls after game started
+      birdreg.d = birdreg.q - 1;
+    }
+  }
+}
