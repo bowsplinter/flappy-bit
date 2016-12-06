@@ -1,0 +1,23 @@
+// 8 layers to be controlled
+module boundaries (
+    input clk,  // clock
+    input rst,  // reset
+    output bot[3],
+    output top[3]
+  ) {
+  .clk(clk){
+    .rst(rst){
+      dff timer[30];
+      dff bot_level[3](#INIT(101));
+      dff top_level[3](#INIT(011));
+    }
+  }
+  // TODO: MAKE TOP AND BOTTOM CHANGE
+  always {
+    bot = bot_level.q;
+    top = top_level.q;
+    
+    bot_level.d = bot_level.q;
+    top_level.d = top_level.q;
+  }
+}
