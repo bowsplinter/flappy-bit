@@ -32,7 +32,7 @@ module alu8 (
     cmp.z = add.z;
     cmp.v = add.v;
     cmp.n = add.n;
-    cmp.alufn = alufn[1:0];
+    cmp.alufn = alufn[2:0];
     
     // shift8
     shift.a = a;

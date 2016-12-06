@@ -4,15 +4,15 @@
    output: out[7-0]
    out[7-0]:
      compares 2 number a,b by putting them through 
-     alufn[2:1] = 01: Equality - return 1 if a - b = 0
-     alufn[2:1] = 10: Less than - return 1 if a < b
-     alufn[2:1] = 11: Less than or Equal - return 1 if a <= b
+     alufn[3:1] = 011: Equality - return 1 if a - b = 0
+     alufn[3:1] = 101: Less than - return 1 if a < b
+     alufn[3:1] = 111: Less than or Equal - return 1 if a <= b
 */
 module compare8 (
     input z,  // zero
     input v,  // overflow
     input n,  // negative
-    input alufn[2],  // ALUFN[2:1]
+    input alufn[3],  // ALUFN[3:1]
     output out[8]
   ) {
   sig less;
@@ -23,11 +23,11 @@ module compare8 (
     lessequal = z|(n^v); // condition for equal + condition for less
     
     case(alufn) {
-      2b01:
+      3b011:
         out = c{7b0, z};
-      2b10:
+      3b101:
         out = c{7b0, less};
-      2b11:
+      3b111:
         out = c{7b0, lessequal};
       default:
         out = c{7b0, z};
