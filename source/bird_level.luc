@@ -6,7 +6,6 @@ module bird_level (
   ) {
   .clk(clk) {
     .rst(rst) {
-    dff counter[30];
     dff birdreg[32](#INIT(00010000<<24));
     dff start[1];
     }
@@ -18,7 +17,6 @@ module bird_level (
     // must change register values and shift left for init value also
     level = birdreg.q[31:24];
     
-    counter.d = counter.q + 1;
     if (on_plus == 1) {
         start.d = 1;
         birdreg.d = birdreg.q + 1;
