@@ -14,7 +14,8 @@ module check (
   .clk(clk) {
   bird_level bird_level;
   boundaries boundaries;
-  dff counter[30];
+  dff counter[30]; // how fast the levels increase
+  dff scorecounter[30]; // how fast the score increases
   register maxscore(#WIDTH(8),#INIT(8b1000));
   dff score[8];
   dff levelcmp[1];
@@ -23,6 +24,7 @@ module check (
   bound_to_bird convertbot;
   alu8 alu;
   
+  sig timer;
   always {
     maxscore.en = 0;
     maxscore.rst = rst;
@@ -31,7 +33,12 @@ module check (
     outmaxscore = maxscore.out; 
     
     score.d = score.q;
-    counter.d = counter.q + 1; 
+    counter.d = counter.q;
+    scorecounter.d = scorecounter.q;
+    if (bird_level.started == 1) {
+      counter.d = counter.q + 1;
+      scorecounter.d = scorecounter.q + 1;
+    } 
     
     bird_level.on_plus = io_button[0];
     bird_level.rst = 0;
@@ -47,16 +54,29 @@ module check (
     debug1 = bird_level.level;
     debug2 = score.q;
     debug3 = maxscore.out;
-    debug4 = counter.q[24];
+    debug4 = c{0000,~counter.q[29:26]};
     
     
-    if (counter.q[29] == 1 && bird_level.started == 1) { // when msb for counter is 1, add score and reset
+    if (scorecounter.q[26] == 1 && bird_level.started == 1) { // when msb for counter is 1, add score and reset
       score.d = score.q + 1;
-      counter.d = 0;
+      scorecounter.d = 0;
     }
     // might have to use 2 different counters?
     
     // game ends when level is less than top or more than bot
+    // as the score increases, decrease the time between each check
+    if (score.q < 10) {
+      timer = counter.q[29];
+    } else if (score.q < 20) {
+      timer = counter.q[28];
+    } else if (score.q < 30) {
+      timer = counter.q[27];
+    } else {
+      timer = counter.q[26];
+    }
+    
+    // or create a separate dff for counter.q[0]
+    if (timer == 1) {
      if (counter.q[0] == 0) {
       alu.a = bird_level.level;
       alu.b = converttop.yellowlevel;
@@ -97,6 +117,8 @@ module check (
         boundaries.rst = 1;
         levelcmp.d = 0;
       }
+      counter.d = 0;
+    }
     }
   }
 }
