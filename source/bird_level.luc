@@ -3,7 +3,8 @@ module bird_level (
     input clk,  // clock
     input rst,  // reset
     input on_plus,
-    output level[8]
+    output level[8],
+    output started
   ) {
   .clk(clk) {
     dff clock[30];
@@ -19,6 +20,8 @@ module bird_level (
     // lower range - bird moves up faster
     // must change register values and shift left for init value also
     level = birdreg.q;
+    
+    started = start.q;
     
     clock.d = clock.q +1;
     alu.a = birdreg.q;

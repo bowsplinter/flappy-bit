@@ -50,11 +50,11 @@ module check (
     debug4 = counter.q[24];
     
     
-    if (counter.q[29] == 1) { // when msb for counter is 1, add score and reset
+    if (counter.q[29] == 1 && bird_level.started == 1) { // when msb for counter is 1, add score and reset
       score.d = score.q + 1;
       counter.d = 0;
     }
-    
+    // might have to use 2 different counters?
     
     // game ends when level is less than top or more than bot
      if (counter.q[0] == 0) {
