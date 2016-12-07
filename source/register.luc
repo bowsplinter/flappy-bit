@@ -1,5 +1,6 @@
 module register #(
-    WIDTH=8
+    WIDTH=8,
+    INIT=0
   )(
     input clk,
     input en,  // enable
@@ -8,10 +9,9 @@ module register #(
     output out[WIDTH]
   ) {
   
-  dff regs[WIDTH](.clk(clk),.rst(rst));
+  dff regs[WIDTH](#INIT(INIT),.clk(clk),.rst(rst));
  
   always {
-  
     if(en==1)
       regs.d=data;
     else  

@@ -2,29 +2,41 @@
 // 32 to 8 
 module check (
     input clk,  // clock
+    input rst,
     input io_button[5],
     output debug1[8],
     output debug2[8],
     output debug3[8],
-    output debug4[8]
+    output debug4[8],
+    output outscore[8],
+    output outmaxscore[8]
   ) {
   .clk(clk) {
   bird_level bird_level;
   boundaries boundaries;
-  dff counter[25];
+  dff counter[30];
+  register maxscore(#WIDTH(8),#INIT(8b1000));
+  dff score[8];
+  dff levelcmp[1];
   }
   bound_to_bird converttop;
   bound_to_bird convertbot;
   alu8 alu;
-  var reset;
+  
   always {
-    counter.d = counter.q + 1;  
+    maxscore.en = 0;
+    maxscore.rst = rst;
+    maxscore.data = 0;
+    outscore = score.q;
+    outmaxscore = maxscore.out; 
     
-    reset = 0;
+    score.d = score.q;
+    counter.d = counter.q + 1; 
     
     bird_level.on_plus = io_button[0];
-    bird_level.rst = reset;
-    boundaries.rst = reset;
+    bird_level.rst = 0;
+    boundaries.rst = 0;
+    
     alu.a = 0;
     alu.b = 0;
     alu.alufn = 0;
@@ -33,26 +45,57 @@ module check (
     convertbot.redlevel = boundaries.bot;
     
     debug1 = bird_level.level;
-    debug2 = converttop.yellowlevel;
-    debug3 = convertbot.yellowlevel;
+    debug2 = score.q;
+    debug3 = maxscore.out;
     debug4 = counter.q[24];
     
+    
+    if (counter.q[29] == 1) { // when msb for counter is 1, add score and reset
+      score.d = score.q + 1;
+      counter.d = 0;
+    }
+    
+    
     // game ends when level is less than top or more than bot
-     if (counter.q[24] == 0) {
+     if (counter.q[0] == 0) {
       alu.a = bird_level.level;
       alu.b = converttop.yellowlevel;
       alu.alufn = 6b110101;
       if (alu.out == 8b1) { // level is less than top 
+        levelcmp.d = 1;
+      }
+      if (levelcmp.q == 1) {
+        alu.a = maxscore.out;
+        alu.b = score.q;
+        alu.alufn = 6b110101;
+        if (alu.out == 8b1) { // maxscore is less than score
+          maxscore.data = score.q;
+          maxscore.en = 1;
+        }
+        score.d = 0;
         bird_level.rst = 1;
         boundaries.rst = 1;
+        levelcmp.d = 0;
       }
     } else {
       alu.b = bird_level.level;
       alu.a = convertbot.yellowlevel;
-      alu.alufn = 6b110101;
+      alu.alufn = 6b110101;      
       if (alu.out == 8b1) { // level is more than bot
+        levelcmp.d = 1;
+      }
+      if (levelcmp.q == 1) {
+        alu.a = maxscore.out;
+        alu.b = score.q;
+        alu.alufn = 6b110101;
+        if (alu.out == 8b1) { // maxscore is less than score
+          maxscore.data = score.q;
+          maxscore.en = 1;
+        }
+        score.d = 0;
         bird_level.rst = 1;
         boundaries.rst = 1;
+        levelcmp.d = 0;
       }
     }
   }
