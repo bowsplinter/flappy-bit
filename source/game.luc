@@ -9,7 +9,8 @@ input clk,  // clock
     output outscore[8],
     output outmaxscore[8],
     output bird[5],
-    output bounds[8]
+    output bounds[8],
+    output countdown[4]
   ) {
   .clk(clk) {
   bird_level bird_level;
@@ -27,6 +28,7 @@ input clk,  // clock
   decoder boundbotdecoder(#WIDTH(3));
   
   sig timer;
+  sig countdownbits[2];
   
   const MAXBOUND = 5b11111;
   const MINBOUND = 5b00000;
@@ -79,13 +81,27 @@ input clk,  // clock
     // as the score increases, decrease the time between each check
     if (score.q < 10) {
       timer = counter.q[29];
+      countdownbits = counter.q[28:27];
     } else if (score.q < 20) {
       timer = counter.q[28];
+      countdownbits = counter.q[27:26];
     } else if (score.q < 30) {
       timer = counter.q[27];
+      countdownbits = counter.q[26:25];
     } else {
       timer = counter.q[26];
+      countdownbits = counter.q[25:24];
     }
+    
+    if (countdownbits == 00) {
+      countdown = 4b1111;
+    } else if (countdownbits == 01) {
+      countdown = 4b0111;
+    } else if (countdownbits == 10) {
+      countdown = 4b0011;
+    } else {
+      countdown = 4b0001;
+    } 
     if (bird_level.level > MAXBOUND || bird_level.level < MINBOUND) {
       score.d = 0;
       bird_level.rst = 1;
