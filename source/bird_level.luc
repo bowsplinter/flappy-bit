@@ -28,7 +28,7 @@ module bird_level (
     alu.b = 8b1;
     alu.alufn = 6b0;
     
-    if (clock.q[24] == 1) {
+    if (clock.q[22] == 1) {
       if (on_plus == 1) {
           start.d = 1;
           birdreg.d = alu.out;

@@ -17,7 +17,7 @@ input clk,  // clock
   boundaries boundaries;
   dff counter[30]; // how fast the levels increase
   dff scorecounter[30]; // how fast the score increases
-  register maxscore(#WIDTH(8),#INIT(8b1000));
+  register maxscore(#WIDTH(8),#INIT(8b00110111));
   dff score[8];
   dff levelcmp[1];
   }

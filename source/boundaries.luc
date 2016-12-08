@@ -15,8 +15,8 @@ module boundaries (
     }
   }
   // array is reverse-indexed
-  const TOPBOUNDS = {3b011, 3b100, 3b001, 3b010, 3b011, 3b011, 3b011, 3b010};
-  const BOTBOUNDS = {3b101, 3b110, 3b010, 3b110, 3b111, 3b110, 3b100, 3b011};
+  const TOPBOUNDS = {3b011, 3b100, 3b010, 3b010, 3b011, 3b011, 3b011, 3b010};
+  const BOTBOUNDS = {3b101, 3b110, 3b011, 3b110, 3b111, 3b110, 3b100, 3b011};
   // TODO: MAKE TOP AND BOTTOM CHANGE
   always {
     bot = BOTBOUNDS[indexreg.q];
@@ -30,6 +30,9 @@ module boundaries (
     
     if (change == 1) {
       indexreg.d = indexreg.q + 1;
+    }
+    if (indexreg.q == 8) {
+      indexreg.d = 0;
     }
   }
 }
