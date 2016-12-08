@@ -93,11 +93,11 @@ input clk,  // clock
       countdownbits = counter.q[25:24];
     }
     
-    if (countdownbits == 00) {
+    if (countdownbits == 2b00) {
       countdown = 4b1111;
-    } else if (countdownbits == 01) {
+    } else if (countdownbits == 2b01) {
       countdown = 4b0111;
-    } else if (countdownbits == 10) {
+    } else if (countdownbits == 2b10) {
       countdown = 4b0011;
     } else {
       countdown = 4b0001;
