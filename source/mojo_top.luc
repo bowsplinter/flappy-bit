@@ -11,12 +11,14 @@ module mojo_top (
     input avr_tx,           // AVR TX (FPGA RX)
     output avr_rx,          // AVR RX (FPGA TX)
     input avr_rx_busy,      // AVR RX buffer full
-    output io_led [3][8],   // LEDs on IO Shield
-    output io_seg [8],      // 7-segment LEDs on IO Shield
-    output io_sel [4],      // Digit select on IO Shield
-    input io_button [5],    // 5 buttons on IO Shield
-    input io_dip [3][8],     // DIP switches on IO Shield
-    output bird[5]
+    output bird[5],
+    output redbounds[8],
+    output segscore[8],
+    output selscore[4],
+    output segmaxscore[8],
+    output selmaxscore[4],
+    output countdown[4],
+    input inputbutton
   ) {
   
   sig rst;                  // reset signal
@@ -26,6 +28,8 @@ module mojo_top (
     // clock. This ensures the entire FPGA comes out of reset at the same time.
     reset_conditioner reset_cond;
     game game;
+    seven_seg segmentscore;
+    seven_seg segmentmaxscore;
   }
   
   always {
@@ -37,18 +41,23 @@ module mojo_top (
     spi_channel = bzzzz;    // not using flags
     avr_rx = bz;            // not using serial port
     
-    io_led = 3x{{8h00}};    // turn LEDs off
-    io_seg = 8hff;          // turn segments off
-    io_sel = 4hf;           // select no digits
-    
-    game.io_button = io_button;
     game.rst = rst;
-    
-    io_led[0] = game.debug1;
-    io_led[1] = game.debug2;
-    io_led[2] = game.debug3;
-    led = game.bounds;
+    game.io_button = inputbutton;
+    redbounds = game.bounds;
     bird = game.bird;
+    led = game.debug4;
+    
+    segmentscore.rst = rst;
+    segmentmaxscore.rst = rst;
+    segmentscore.score = game.outscore;
+    segmentmaxscore.score = game.outmaxscore;
+    segscore = segmentscore.seg;
+    selscore = segmentscore.sel;
+    segmaxscore = segmentmaxscore.seg;
+    selmaxscore = segmentmaxscore.sel;
+    
+    countdown = game.countdown;
+    
     
     // score is in binary ? convert to decimal
     // build array based on decimal 

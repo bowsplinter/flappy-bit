@@ -3,3 +3,48 @@ NET "bird<1>" LOC = P41 | IOSTANDARD = LVTTL;
 NET "bird<2>" LOC = P35 | IOSTANDARD = LVTTL;
 NET "bird<3>" LOC = P33 | IOSTANDARD = LVTTL;
 NET "bird<4>" LOC = P30 | IOSTANDARD = LVTTL;
+
+NET "redbounds<0>" LOC = P144 | IOSTANDARD = LVTTL;
+NET "redbounds<1>" LOC = P142 | IOSTANDARD = LVTTL;
+NET "redbounds<2>" LOC = P140 | IOSTANDARD = LVTTL;
+NET "redbounds<3>" LOC = P138 | IOSTANDARD = LVTTL;
+NET "redbounds<4>" LOC = P134 | IOSTANDARD = LVTTL;
+NET "redbounds<5>" LOC = P132 | IOSTANDARD = LVTTL;
+NET "redbounds<6>" LOC = P127 | IOSTANDARD = LVTTL;
+NET "redbounds<7>" LOC = P124 | IOSTANDARD = LVTTL;
+
+NET "segscore<0>" LOC = P58 | IOSTANDARD = LVTTL;
+NET "segscore<1>" LOC = P67 | IOSTANDARD = LVTTL;
+NET "segscore<2>" LOC = P75 | IOSTANDARD = LVTTL;
+NET "segscore<3>" LOC = P79 | IOSTANDARD = LVTTL;
+NET "segscore<4>" LOC = P81 | IOSTANDARD = LVTTL;
+NET "segscore<5>" LOC = P83 | IOSTANDARD = LVTTL;
+NET "segscore<6>" LOC = P85 | IOSTANDARD = LVTTL;
+NET "segscore<7>" LOC = P88 | IOSTANDARD = LVTTL;
+
+NET "selscore<0>" LOC = P57 | IOSTANDARD = LVTTL;
+NET "selscore<1>" LOC = P66 | IOSTANDARD = LVTTL;
+NET "selscore<2>" LOC = P74 | IOSTANDARD = LVTTL;
+NET "selscore<3>" LOC = P78 | IOSTANDARD = LVTTL;
+
+NET "inputbutton" LOC = P95 | IOSTANDARD = LVTTL;
+
+NET "countdown<0>" LOC = P9 | IOSTANDARD = LVTTL;
+NET "countdown<1>" LOC = P7 | IOSTANDARD = LVTTL;
+NET "countdown<2>" LOC = P5 | IOSTANDARD = LVTTL;
+NET "countdown<3>" LOC = P1 | IOSTANDARD = LVTTL;
+
+NET "segmaxscore<0>" LOC = P100 | IOSTANDARD = LVTTL;
+NET "segmaxscore<1>" LOC = P102 | IOSTANDARD = LVTTL;
+NET "segmaxscore<2>" LOC = P105 | IOSTANDARD = LVTTL;
+NET "segmaxscore<3>" LOC = P112 | IOSTANDARD = LVTTL;
+NET "segmaxscore<4>" LOC = P115 | IOSTANDARD = LVTTL;
+NET "segmaxscore<5>" LOC = P117 | IOSTANDARD = LVTTL;
+NET "segmaxscore<6>" LOC = P119 | IOSTANDARD = LVTTL;
+NET "segmaxscore<7>" LOC = P121 | IOSTANDARD = LVTTL;
+
+NET "selmaxscore<0>" LOC = P114 | IOSTANDARD = LVTTL;
+NET "selmaxscore<1>" LOC = P116 | IOSTANDARD = LVTTL;
+NET "selmaxscore<2>" LOC = P118 | IOSTANDARD = LVTTL;
+NET "selmaxscore<3>" LOC = P120 | IOSTANDARD = LVTTL;
+

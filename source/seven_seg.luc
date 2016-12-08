@@ -1,36 +1,54 @@
 module seven_seg (
-    input char[5],
-    output segs[7]
+    input clk,
+    input rst,
+    input score[8],
+    output seg[7],
+    output sel[4]
   ) {
- 
+    dff counter[30](.clk(clk), .rst(rst));
+    sig n[2]; //initialise cycle
+  sig char[4];
+
   always {
+    n = counter.q[15-:2]; // choose the 14 and 15 bits
+    counter.d = counter.q+1;
+    
+    sel[3:0] = 4b1111; // set all 4 levels to high first
+    sel[n] = 1b0;      // set nth level to low (cycles through digits)
+      case(n) {
+        0: char = 0; 
+        1: char = 0;
+        2: char = score/10;            // first digit: score/10
+        3: char = score-(score/10)*10; // second digit: score%10
+        default: char = 0;
+        }
     case (char) {
-      0: segs = 7b0111111;
-      1: segs = 7b0000110;
-      2: segs = 7b1011011;
-      3: segs = 7b1001111;
-      4: segs = 7b1100110;
-      5: segs = 7b1101101;
-      6: segs = 7b1111101;
-      7: segs = 7b0000111;
-      8: segs = 7b1111111;
-      9: segs = 7b1100111;
-      10: segs = 7b0000000;  // 
-      11: segs = 7b1110111;  // A
-      12: segs = 7b1111100;  // b
-      13: segs = 7b0111001;  // C
-      14: segs = 7b1011110;  // d
-      15: segs = 7b1111001;  // E
-      16: segs = 7b1110001;  // F
-      17: segs = 7b1110110;  // H
-      18: segs = 7b0111000;  // L
-      19: segs = 7b1010100;  // n
-      20: segs = 7b0111111;  // O
-      21: segs = 7b1110011;  // P
-      22: segs = 7b1010000;  // r
-      23: segs = 7b1101101;  // S
-      24: segs = 7b0111110;  // U
-      default: segs = 7b0000000;
+      0: seg = 7b0111111;
+      1: seg = 7b0000110;
+      2: seg = 7b1011011;
+      3: seg = 7b1001111;
+      4: seg = 7b1100110;
+      5: seg = 7b1101101;
+      6: seg = 7b1111101;
+      7: seg = 7b0000111;
+      8: seg = 7b1111111;
+      9: seg = 7b1100111;
+      10: seg = 7b0000000;  // 
+      11: seg = 7b1110111;  // A
+      12: seg = 7b1111100;  // b
+      13: seg = 7b0111001;  // C
+      14: seg = 7b1011110;  // d
+      15: seg = 7b1111001;  // E
+      16: seg = 7b1110001;  // F
+      17: seg = 7b1110110;  // H
+      18: seg = 7b0111000;  // L
+      19: seg = 7b1010100;  // n
+      20: seg = 7b0111111;  // O
+      21: seg = 7b1110011;  // P
+      22: seg = 7b1010000;  // r
+      23: seg = 7b1101101;  // S
+      24: seg = 7b0111110;  // U
+      default: seg = 7b0000000;
     }
   }
 }
