@@ -25,6 +25,10 @@ module check (
   alu8 alu;
   
   sig timer;
+  
+  const MAXBOUND = 5b11111;
+  const MINBOUND = 5b00000;
+  
   always {
     maxscore.en = 0;
     maxscore.rst = rst;
@@ -75,6 +79,12 @@ module check (
     } else {
       timer = counter.q[26];
     }
+    if (bird_level.level > MAXBOUND || bird_level.level < MINBOUND) {
+      score.d = 0;
+      bird_level.rst = 1;
+      boundaries.rst = 1;
+      counter.d = 0; // needed? 
+    }
     
     // or create a separate dff for counter.q[0]
     if (timer == 1) {
@@ -119,7 +129,7 @@ module check (
         levelcmp.d = 0;
       }
     } else {
-        counter.d = 0;
+        counter.d = 0; // add to other if statements also?
         boundaries.change = 1;
       }
     }
