@@ -2,22 +2,34 @@
 module boundaries (
     input clk,  // clock
     input rst,  // reset
+    input change,
     output bot[3],
-    output top[3]
+    output top[3],
+    output index[8]
   ) {
   .clk(clk){
     .rst(rst){
-      dff timer[30];
+      dff indexreg[8];
       dff bot_level[3](#INIT(101));
       dff top_level[3](#INIT(011));
     }
   }
+  // array is reverse-indexed
+  const TOPBOUNDS = {3b011, 3b100, 3b001, 3b010, 3b011, 3b011, 3b011, 3b010};
+  const BOTBOUNDS = {3b101, 3b110, 3b010, 3b110, 3b111, 3b110, 3b100, 3b011};
   // TODO: MAKE TOP AND BOTTOM CHANGE
   always {
-    bot = bot_level.q;
-    top = top_level.q;
+    bot = BOTBOUNDS[indexreg.q];
+    top = TOPBOUNDS[indexreg.q];
+    index = indexreg.q;
     
     bot_level.d = bot_level.q;
     top_level.d = top_level.q;
+    
+    indexreg.d = indexreg.q;
+    
+    if (change == 1) {
+      indexreg.d = indexreg.q + 1;
+    }
   }
 }

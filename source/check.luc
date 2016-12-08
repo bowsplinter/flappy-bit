@@ -43,6 +43,7 @@ module check (
     bird_level.on_plus = io_button[0];
     bird_level.rst = 0;
     boundaries.rst = 0;
+    boundaries.change = 0;
     
     alu.a = 0;
     alu.b = 0;
@@ -52,8 +53,8 @@ module check (
     convertbot.redlevel = boundaries.bot;
     
     debug1 = bird_level.level;
-    debug2 = score.q;
-    debug3 = maxscore.out;
+    debug2 = boundaries.top;
+    debug3 = boundaries.bot;
     debug4 = c{0000,~counter.q[29:26]};
     
     
@@ -119,6 +120,7 @@ module check (
       }
     } else {
         counter.d = 0;
+        boundaries.change = 1;
       }
     }
   }
