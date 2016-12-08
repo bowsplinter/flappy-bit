@@ -1,7 +1,5 @@
-// make sure bird_level is above bottom boundary and below top boundary
-// 32 to 8 
-module check (
-    input clk,  // clock
+module game (
+input clk,  // clock
     input rst,
     input io_button[5],
     output debug1[8],
@@ -135,3 +133,4 @@ module check (
     }
   }
 }
+

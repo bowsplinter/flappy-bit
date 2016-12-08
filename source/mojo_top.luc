@@ -27,7 +27,7 @@ module mojo_top (
     reset_conditioner reset_cond;
     // bird_level bird_level;
     // boundaries boundaries;
-    check check;
+    game game;
   }
   
   always {
@@ -53,13 +53,13 @@ module mojo_top (
     // boundaries.rst = rst;
     // io_led[1] = boundaries.bot;
     // io_led[2] = boundaries.top;
-    check.io_button = io_button;
-    check.rst = rst;
+    game.io_button = io_button;
+    game.rst = rst;
     
-    io_led[0] = check.debug1;
-    io_led[1] = check.debug2;
-    io_led[2] = check.debug3;
-    led = check.debug4;
-    bird = check.debug1;
+    io_led[0] = game.debug1;
+    io_led[1] = game.debug2;
+    io_led[2] = game.debug3;
+    led = game.debug4;
+    bird = game.debug1;
   }
 }
