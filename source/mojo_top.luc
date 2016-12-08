@@ -59,7 +59,7 @@ module mojo_top (
     io_led[0] = game.debug1;
     io_led[1] = game.debug2;
     io_led[2] = game.debug3;
-    led = game.debug4;
-    bird = game.debug1;
+    led = game.bounds;
+    bird = game.bird;
   }
 }

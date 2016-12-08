@@ -7,7 +7,9 @@ input clk,  // clock
     output debug3[8],
     output debug4[8],
     output outscore[8],
-    output outmaxscore[8]
+    output outmaxscore[8],
+    output bird[5],
+    output bounds[8]
   ) {
   .clk(clk) {
   bird_level bird_level;
@@ -21,6 +23,8 @@ input clk,  // clock
   bound_to_bird converttop;
   bound_to_bird convertbot;
   alu8 alu;
+  decoder boundtopdecoder(#WIDTH(3));
+  decoder boundbotdecoder(#WIDTH(3));
   
   sig timer;
   
@@ -53,6 +57,11 @@ input clk,  // clock
     
     converttop.redlevel = boundaries.top;
     convertbot.redlevel = boundaries.bot;
+    
+    bird = bird_level.level[4:0];
+    boundbotdecoder.in = boundaries.bot; // decode bot and top to hot wire
+    boundtopdecoder.in = boundaries.top;
+    bounds = boundbotdecoder.out | boundtopdecoder.out; // combine the two to output
     
     debug1 = bird_level.level;
     debug2 = boundaries.top;
