@@ -9,6 +9,7 @@
     <src>boole8.luc</src>
     <src>multi_seven_seg.luc</src>
     <src top="true">mojo_top.luc</src>
+    <src>bin2dec.luc</src>
     <src>bound_to_bird.luc</src>
     <src>game.luc</src>
     <src>boundaries.luc</src>
@@ -22,5 +23,6 @@
     <component>decoder.luc</component>
     <component>reset_conditioner.luc</component>
     <component>counter.luc</component>
+    <component>edge_detector.luc</component>
   </files>
 </project>
