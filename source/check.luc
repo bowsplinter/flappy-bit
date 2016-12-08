@@ -77,7 +77,7 @@ module check (
     
     // or create a separate dff for counter.q[0]
     if (timer == 1) {
-     if (counter.q[0] == 0) {
+     if (counter.q[3:2] == 00) {
       alu.a = bird_level.level;
       alu.b = converttop.yellowlevel;
       alu.alufn = 6b110101;
@@ -97,7 +97,7 @@ module check (
         boundaries.rst = 1;
         levelcmp.d = 0;
       }
-    } else {
+    } else if (counter.q[3:2] == 01){
       alu.b = bird_level.level;
       alu.a = convertbot.yellowlevel;
       alu.alufn = 6b110101;      
@@ -117,8 +117,9 @@ module check (
         boundaries.rst = 1;
         levelcmp.d = 0;
       }
-      counter.d = 0;
-    }
+    } else {
+        counter.d = 0;
+      }
     }
   }
 }
