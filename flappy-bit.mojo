@@ -3,17 +3,17 @@
   <files>
     <src>bird_level.luc</src>
     <src>alu8.luc</src>
+    <src>game.luc</src>
+    <src>boundaries.luc</src>
     <src>shift8.luc</src>
+    <src>multiplier8.luc</src>
     <src>compare8.luc</src>
+    <src>adder8.luc</src>
+    <src>seven_seg.luc</src>
     <src>register.luc</src>
     <src>boole8.luc</src>
     <src top="true">mojo_top.luc</src>
     <src>bound_to_bird.luc</src>
-    <src>game.luc</src>
-    <src>boundaries.luc</src>
-    <src>multiplier8.luc</src>
-    <src>adder8.luc</src>
-    <src>seven_seg.luc</src>
     <ucf lib="true">io_shield.ucf</ucf>
     <ucf>game_io.ucf</ucf>
     <ucf lib="true">mojo.ucf</ucf>

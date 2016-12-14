@@ -42,10 +42,10 @@ module mojo_top (
     avr_rx = bz;            // not using serial port
     
     game.rst = rst;
-    game.io_button = ~inputbutton;
+    game.io_button = inputbutton;
     redbounds = game.bounds;
     bird = game.bird;
-    led = game.debug4;
+    led = 8b00001100;
     
     segmentscore.rst = rst;
     segmentmaxscore.rst = rst;

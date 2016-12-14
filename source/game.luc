@@ -20,6 +20,8 @@ input clk,  // clock
   register maxscore(#WIDTH(8),#INIT(8b00110111));
   dff score[8];
   dff levelcmp[1];
+  dff ended[1];
+  dff endedcounter[30];
   }
   bound_to_bird converttop;
   bound_to_bird convertbot;
@@ -38,7 +40,7 @@ input clk,  // clock
     maxscore.rst = rst;
     maxscore.data = 0;
     outscore = score.q;
-    outmaxscore = maxscore.out; 
+    outmaxscore = maxscore.out;
     
     score.d = score.q;
     counter.d = counter.q;
@@ -70,27 +72,40 @@ input clk,  // clock
     debug3 = boundaries.bot;
     debug4 = c{0000,~counter.q[29:26]};
     
+    endedcounter.d = endedcounter.q;
+    if (ended.q == 1) {
+      bounds = 8b11111111;
+      bird_level.on_plus = 0;
+      endedcounter.d = endedcounter.q + 1;
+      if (endedcounter.q[27] == 1){
+        endedcounter.d = 0;
+        ended.d = 0;
+        score.d = 0;
+        boundaries.rst = 1;
+        bird_level.rst =1;
+      }
+    }
     
-    if (scorecounter.q[26] == 1 && bird_level.started == 1) { // when msb for counter is 1, add score and reset
+    if (scorecounter.q[27] == 1 && bird_level.started == 1) { // when msb for counter is 1, add score and reset
       score.d = score.q + 1;
       scorecounter.d = 0;
-    }
+    }    
     // might have to use 2 different counters?
     
     // game ends when level is less than top or more than bot
     // as the score increases, decrease the time between each check
     if (score.q < 10) {
-      timer = counter.q[29];
-      countdownbits = counter.q[28:27];
-    } else if (score.q < 20) {
       timer = counter.q[28];
       countdownbits = counter.q[27:26];
-    } else if (score.q < 30) {
+    } else if (score.q < 20) {
       timer = counter.q[27];
       countdownbits = counter.q[26:25];
-    } else {
+    } else if (score.q < 30) {
       timer = counter.q[26];
       countdownbits = counter.q[25:24];
+    } else {
+      timer = counter.q[25];
+      countdownbits = counter.q[24:23];
     }
     
     if (countdownbits == 2b00) {
@@ -103,9 +118,10 @@ input clk,  // clock
       countdown = 4b0001;
     } 
     if (bird_level.level > MAXBOUND || bird_level.level < MINBOUND) {
-      score.d = 0;
+      // score.d = 0;
       bird_level.rst = 1;
-      boundaries.rst = 1;
+      // boundaries.rst = 1;
+      ended.d = 1;
       counter.d = 0; // needed? 
     }
     
@@ -126,10 +142,12 @@ input clk,  // clock
           maxscore.data = score.q;
           maxscore.en = 1;
         }
-        score.d = 0;
+        ended.d = 1;
         bird_level.rst = 1;
-        boundaries.rst = 1;
+        // boundaries.rst = 1;
         levelcmp.d = 0;
+        counter.d = 0;
+        // score.d = 0;
       }
     } else if (counter.q[3:2] == 01){
       alu.b = bird_level.level;
@@ -146,12 +164,15 @@ input clk,  // clock
           maxscore.data = score.q;
           maxscore.en = 1;
         }
-        score.d = 0;
+        ended.d = 1;
         bird_level.rst = 1;
-        boundaries.rst = 1;
+        // boundaries.rst = 1;
         levelcmp.d = 0;
+        counter.d = 0;
+        // score.d = 0;
       }
     } else {
+        // score.d = score.q +1; 
         counter.d = 0; // add to other if statements also?
         boundaries.change = 1;
       }

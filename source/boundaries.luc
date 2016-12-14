@@ -8,15 +8,15 @@ module boundaries (
     output index[8]
   ) {
   .clk(clk){
+    dff indexreg[8];
     .rst(rst){
-      dff indexreg[8];
       dff bot_level[3](#INIT(101));
       dff top_level[3](#INIT(011));
     }
   }
   // array is reverse-indexed
-  const TOPBOUNDS = {3b011, 3b100, 3b010, 3b010, 3b011, 3b011, 3b011, 3b010};
-  const BOTBOUNDS = {3b101, 3b110, 3b011, 3b110, 3b111, 3b110, 3b100, 3b011};
+  const TOPBOUNDS = {3b000, 3b001, 3b011, 3b001, 3b010, 3b100, 3b010, 3b000, 3b001, 3b000, 3b010, 3b100, 3b101, 3b011, 3b001, 3b011, 3b010, 3b100, 3b011, 3b010, 3b100, 3b011, 3b010, 3b000, 3b001, 3b011, 3b010, 3b100, 3b011, 3b101, 3b100, 3b010};
+  const BOTBOUNDS = {3b010, 3b011, 3b101, 3b011, 3b100, 3b101, 3b100, 3b010, 3b010, 3b001, 3b100, 3b101, 3b111, 3b100, 3b011, 3b100, 3b011, 3b110, 3b101, 3b100, 3b101, 3b100, 3b100, 3b001, 3b010, 3b100, 3b100, 3b110, 3b100, 3b111, 3b110, 3b011};
   // TODO: MAKE TOP AND BOTTOM CHANGE
   always {
     bot = BOTBOUNDS[indexreg.q];
@@ -27,11 +27,14 @@ module boundaries (
     top_level.d = top_level.q;
     
     indexreg.d = indexreg.q;
+    if (rst == 1) {
+      indexreg.d = indexreg.q + 2;
+    }
     
     if (change == 1) {
       indexreg.d = indexreg.q + 1;
     }
-    if (indexreg.q == 8) {
+    if (indexreg.q == 32) {
       indexreg.d = 0;
     }
   }
