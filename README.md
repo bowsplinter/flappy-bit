@@ -19,7 +19,7 @@ As your score increases, the countdown timer becomes faster, increasing the diff
 
 There are 8 output pins for the red LED rows, 4 for the counter, 7+4 output pins for each seven-segment-display and 1 input pin for the button.
 
-It would have been impracticle to have a output pin for each of the yellow LEDs (32), thus 5 [74HC238](http://www.nxp.com/documents/data_sheet/74HC_HCT238.pdf) 3to8 decoders are used to decode 5 output pins into the corresponding yellow LED.
+It would have been impractical to have an output pin for each of the yellow LEDs (32), thus 5 [74HC238](http://www.nxp.com/documents/data_sheet/74HC_HCT238.pdf) 3to8 decoders are used to decode 5 output pins into the corresponding yellow LED.
 
 ![](/physicalschematics.jpg)
 
